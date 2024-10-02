@@ -1,0 +1,25 @@
+
+<div class="header sticky" >
+    <div class="branding">
+      <mat-sidenav-container (backdropClick)="close()">
+        <div class="menu-button menu-toggle nav" 
+        #menubtn
+         (click)= "_sendEventToParent()">
+            <i class="material-icons">menu</i>
+        </div>
+        </mat-sidenav-container>
+        <img    src="https://mirrors.creativecommons.org/presskit/logos/cc.logo.large.png" />
+    </div>
+    <div class="page-details">
+        <div class="title">Page Title That Might Get Really Long Sometimes 
+        </div>
+    </div>
+    <div class="settings">
+        <div class="menu-button profile">
+            <i class="material-icons">person</i>
+        </div>
+        <div class="menu-button menu-toggle .aside">
+            <i class="material-icons" >chat</i>
+        </div>
+    </div>
+</div>

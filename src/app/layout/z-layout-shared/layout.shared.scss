@@ -1,0 +1,256 @@
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    padding: 0;
+    margin:0;
+    height:100%;
+    min-height:100%;
+}
+
+body {
+    margin:0;
+    display: flex;
+    flex-direction: column;
+}
+
+.header { 
+    z-index: 0;
+    flex: 0 64px;
+    display: flex;
+    width: 100%;
+    background: white;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.24);
+
+    .branding,
+    .page-details,
+    .settings {
+        display: flex;
+        align-items: center;
+    }
+
+    .branding {
+        flex: 0 0 256px;
+        order: 0;
+        justify-content: flex-start;
+
+        img {
+            max-height: 32px;
+            max-width: 175px;
+        }
+    }
+
+    .page-details {
+        flex: 1 1 100%;
+        order: 1;
+        padding: 0 24px;
+        overflow: hidden;
+
+        .title {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+
+            font-size: 20px;
+            line-height: 24px;
+        }
+    }
+
+    .settings {
+        flex: 0 0 256px;
+        order: 2;
+        justify-content: flex-end;
+    }
+}
+
+
+
+.footer {
+  position: static;
+  bottom: 0;
+  width: 100%;
+  z-index: 4;
+}
+
+.menu-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    margin: 8px;
+
+    &:hover {
+        background: rgba(0,0,0,0.08);
+        cursor: pointer;
+    }
+}
+
+.app {
+    flex: 1;
+    display: flex;
+}
+
+nav {
+    background: #FAF9F8;
+    flex: 0 0 256px;
+    overflow: auto;
+    order: 0;
+    border-right: 1px solid #d9d9d9;
+  position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+  top: 0; /* Stay at the top */
+  left: 0;
+
+    
+    .branding,
+    .title-block {
+        height: 64px;
+        display: flex;
+        align-items: center;
+        padding: 0 24px;
+        
+        img {
+            max-height: 32px;
+            max-width: 175px;
+        }
+    }
+    
+    ul {
+        list-style: none;
+        margin: 8px 0;
+        padding: 0;
+
+        li a {
+            display: flex;
+            align-items: center;
+            height: 56px;
+            padding: 0 20px;
+            text-decoration: none;
+            color: black;
+
+            span {
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+            }
+
+            &:hover {
+                background: rgba(0,0,0,0.08);
+                cursor: pointer;
+            }
+
+            i {
+                margin-right: 20px;
+                opacity: 0.5;
+            }
+        }
+    }
+}
+
+article {
+    background: #F3F3F5;
+    flex: 1 1 100px;
+    order: 1;
+
+    overflow: auto;
+    padding: 24px;
+}
+
+.aside {
+    background: #FAF9F8;
+    flex: 0 0 256px;
+    order: 2;
+
+    overflow: auto;
+    border-left: 1px solid #d9d9d9;
+}
+
+.card {
+    max-width: 960px;
+    width: 100%;
+    height: 200px;
+    margin: 0 auto;
+    background: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.24);
+    
+    &:not(:last-child) {
+        margin-bottom: 24px;
+    }
+}
+
+@media (min-width: 800px) {
+    .branding {
+        padding: 0 24px;
+    }
+    .menu-toggle {
+        display: none;
+    }
+    
+    nav .title-block {
+        display: none;
+    }
+}
+
+@media (max-width: 800px) {
+    nav,
+    .aside, 
+    .branding img {
+        display: none;
+    }
+    
+    .header .settings .profile {
+        display: none;
+    }
+    
+    .header .branding,
+    .header .settings {
+        flex: 0 0 64px;
+    }
+    
+    .header .page-details {
+        padding: 0 24px;
+        justify-content: center;
+    }
+    
+    article {
+        padding: 16px;
+    }
+    
+    .card:not(:last-child) {
+        margin-bottom: 16px;
+    }
+    
+    nav {
+        position: fixed;
+        top: 0;
+        left: -256px;
+        width: 256px;
+        height: 100%;
+        display: block;
+        transition: all 0.2s ease;
+        overflow: auto;
+        
+        &.open {
+            left: 0;
+            box-shadow: 2px 0 8px rgba(0,0,0,0.24);
+            z-index: 2;
+        }
+    }
+    
+    .aside {
+        position: absolute;
+        top: 0;
+        right: -100vw;
+        width: 100vw;
+        height: 100vh;
+        display: block;
+        transition: all 0.2s ease;
+        overflow: auto;
+        
+        &.open {
+            right: 0;
+            box-shadow: 2px 0 8px rgba(0,0,0,0.24);
+        }
+    }
+}
