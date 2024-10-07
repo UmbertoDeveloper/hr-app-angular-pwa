@@ -1,20 +1,24 @@
 .sticky {
-  position:fixed;
+  position: fixed;
   top: 0;
   width: 100%;
   z-index: 1000;
   flex: 0 65px
 }
+
 .wrapper-app {
-    flex: 0 65px;
-    margin: 0px 0px 0px 0px;
-    padding-bottom: 35px; //dimensione del footer
-}
-.content {
-    z-index:2;
+  flex: 0 65px;
+  margin: 0px 0px 0px 0px;
+  padding-right: 10px;
+  padding-left: 10px;
+  padding-bottom: 35px; //dimensione del footer
 }
 
-.sticky + .content {
+.content {
+  z-index: 2;
+}
+
+.sticky+.content {
   padding-top: 85px;
 }
 
@@ -28,24 +32,24 @@ footer {
   width: 100%;
   overflow: hidden;
   z-index: 4;
-  text-align:center;
+  text-align: center;
   padding-top: 5px;
 }
 
-.sidenav-container{
+.sidenav-container {
   height: 100%;
-  top:0;
-  left:0;
-  bottom:0;
+  top: 0;
+  left: 0;
+  bottom: 0;
   z-index: 1000;
 }
 
-.sidenav{
+.sidenav {
   height: 100%;
   position: fixed;
-  top:0;
-  left:0;
-  bottom:0;
+  top: 0;
+  left: 0;
+  bottom: 0;
   z-index: 1000;
   width: 250px;
   overflow: auto;

@@ -5,25 +5,51 @@ import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 
-export interface UserData {
+export interface TimeReportData {
   id: string;
   name: string;
-  progress: string;
-  fruit: string;
+  surname: string;
+  month: string;
 }
 
 /** Constants used to fill up our data base. */
-const FRUITS: string[] = [
-  'blueberry',
-  'lychee',
-  'kiwi',
-  'mango',
-  'peach',
-  'lime',
-  'pomegranate',
-  'pineapple',
+const MONTHS: string[] = [
+  'Gennaio',
+  'Febbraio',
+  'Marzo',
+  'Aprile',
+  'Maggio',
+  'Giugno',
+  'Luglio',
+  'Agosto',
+  'Settembre',
+  'Ottobre',
+  'Novembre',
+  'Dicembre'
 ];
 const NAMES: string[] = [
+  'Maia',
+  'Asher',
+  'Olivia',
+  'Atticus',
+  'Amelia',
+  'Jack',
+  'Charlotte',
+  'Theodore',
+  'Isla',
+  'Oliver',
+  'Isabella',
+  'Jasper',
+  'Cora',
+  'Levi',
+  'Violet',
+  'Arthur',
+  'Mia',
+  'Thomas',
+  'Elizabeth',
+];
+
+const SURNAMES: string[] = [
   'Maia',
   'Asher',
   'Olivia',
@@ -54,8 +80,8 @@ const NAMES: string[] = [
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchTimeReportComponent {
-  displayedColumns: string[] = ['id', 'name', 'progress', 'fruit'];
-  dataSource!: MatTableDataSource<UserData>;
+  displayedColumns: string[] = ['id', 'name', 'surname', 'month'];
+  dataSource!: MatTableDataSource<TimeReportData>;
 
   
   
@@ -87,17 +113,19 @@ export class SearchTimeReportComponent {
 }
 
 /** Builds and returns a new User. */
-function createNewUser(id: number): UserData {
+function createNewUser(id: number): TimeReportData {
   const name =
-    NAMES[Math.round(Math.random() * (NAMES.length - 1))] +
-    ' ' +
-    NAMES[Math.round(Math.random() * (NAMES.length - 1))].charAt(0) +
-    '.';
+    NAMES[Math.round(Math.random() * (NAMES.length - 1))];
+
+  const surname =
+    NAMES[Math.round(Math.random() * (NAMES.length - 1))];
+
+  const month = MONTHS[Math.floor(Math.random() * MONTHS.length)];
 
   return {
     id: id.toString(),
     name: name,
-    progress: Math.round(Math.random() * 100).toString(),
-    fruit: FRUITS[Math.round(Math.random() * (FRUITS.length - 1))],
+    surname: surname,
+    month: month
   };
 }
