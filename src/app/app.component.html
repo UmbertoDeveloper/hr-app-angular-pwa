@@ -1,7 +1,18 @@
 <mat-sidenav-container
   class="sidenav-container"  (backdropClick)="close()">
-    <mat-sidenav class="sidenav" #sidenav (keydown.escape)="close()" disableClose>
+    <mat-sidenav class="sidenav" #sidenav (keydown.escape)="close()" [mode]="isScreenSmall ? 'over' : 'side'"
+    [opened]="!isScreenSmall"  disableClose>
+    @if(isScreenSmall) {
       <p><button mat-button (click)="close()">Close</button></p>
+    }
+      <mat-nav-list>
+        <mat-list-item>
+          <div mat-button (click)="isScreenSmall ? sidenav.close() : ''" [routerLink]="['/home']">Home</div>
+        </mat-list-item>
+        <mat-list-item>
+          <div mat-button (click)="isScreenSmall ? sidenav.close() : ''" [routerLink]="['/division']">Division</div>
+        </mat-list-item>
+      </mat-nav-list>
     </mat-sidenav>
 
   <mat-sidenav-content class="page">
@@ -11,10 +22,12 @@
     </div>
 
     <div class="wrapper-app content">
-      <app-user-content-layout></app-user-content-layout>
+      <!-- <app-user-content-layout></app-user-content-layout> -->
+      <!-- <app-main-content></app-main-content> -->
+       <router-outlet></router-outlet>
     <div>
    
-      
+    </div></div>
     <footer class="footer">
       <app-footer></app-footer>
     </footer>

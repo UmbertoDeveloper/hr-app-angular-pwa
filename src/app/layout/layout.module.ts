@@ -14,7 +14,7 @@ import { MatSidenavContainer } from "@angular/material/sidenav";
 
 
 @NgModule({
-    exports: [HeaderComponent,UserContentLayoutComponent,FooterComponent],
+    exports: [HeaderComponent,UserContentLayoutComponent,FooterComponent, MainContentComponent],
     imports: [
         CommonModule,
         FormsModule,
