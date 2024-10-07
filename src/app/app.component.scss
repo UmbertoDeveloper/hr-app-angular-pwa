@@ -8,6 +8,7 @@
 .wrapper-app {
     flex: 0 65px;
     margin: 0px 0px 0px 0px;
+    padding-bottom: 35px; //dimensione del footer
 }
 .content {
     z-index:2;
@@ -51,6 +52,6 @@ footer {
   background-color: gainsboro;
 }
 
-.page{
-  overflow: hidden;
-}
+// .page{
+//   overflow: hidden;
+// }
