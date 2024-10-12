@@ -1,0 +1,10 @@
+table {
+  width: 100%;
+  table-layout: fixed;
+  overflow-wrap: break-word; 
+}
+
+td, th {
+  width: 25%;
+  word-wrap: break-word; 
+}
