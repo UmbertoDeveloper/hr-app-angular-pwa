@@ -6,6 +6,8 @@ import { MonthNamePipe } from "../../pipes/month-name.pipe";
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Column } from './models/column.model';
 import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
+import { merge, tap } from 'rxjs';
+import { TableDataSource } from './models/table-data-source.model';
 
 const MONTHS: string[] = [
   '01',
@@ -72,39 +74,58 @@ const NAMES: string[] = [
 })
 export class ResultTableComponent {
   displayedColumns: string[] = ['name', 'surname', 'month', 'year'];
-  @Input() dataSource: MatTableDataSource<any> | undefined;
+  @Input() dataSource!: TableDataSource;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @Output() sizeOrPageChange: EventEmitter<PageEvent> = new EventEmitter<PageEvent>();
   @Output() sortChange: EventEmitter<Sort> = new EventEmitter<Sort>();
+  totalItems!: number;
+  itemsPerPage: number=5;
 
   constructor() {
 
   }
-
   ngAfterViewInit() {
-    if (this.dataSource) {
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-    }
+      this.totalItems = 100;
+
+    // Trigger quando cambiano paginazione o ordinamento
+    merge(this.paginator.page, this.sort.sortChange)
+      .pipe(tap(() => this.onPageOrSortChange())) // Ricarica i dati a ogni cambiamento
+      .subscribe();
+  }
+
+  onPageOrSortChange() {
+    const pageEvent: PageEvent = {
+      pageIndex: this.paginator.pageIndex,
+      pageSize: this.paginator.pageSize,
+      length: this.totalItems
+    };
+
+    const sortEvent: Sort = this.sort.active ? {
+      active: this.sort.active,
+      direction: this.sort.direction
+    } : { active: '', direction: '' };
+
+    this.loadData(pageEvent, sortEvent);
+  }
+
+  loadData(pageEvent: PageEvent, sortEvent: Sort) {
+    console.log('loadData', pageEvent, sortEvent);
+    // Qui puoi fare una chiamata al backend per ottenere i dati paginati e ordinati
   }
 
   ngOnChanges() {
-    if (this.dataSource) {
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-    }
+
   }
 
-  onPageOrSizeChange(event:PageEvent) {
+  onPageOrSizeChange(event: PageEvent) {
     console.log('onPageOrSizeChange', event);
-    this.sizeOrPageChange.emit();
+    this.sizeOrPageChange.emit(event);
   }
 
-  onSortChange(event:Sort) {
+  onSortChange(event: Sort) {
     console.log('onSortChange', event);
-    this.sortChange.emit();
+    this.sortChange.emit(event);
   }
 }
-

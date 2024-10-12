@@ -7,6 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MonthNamePipe } from "../pipes/month-name.pipe";
 import { ResultTableComponent } from "../utilityComponents/result-table/result-table.component";
 import { Column } from '../utilityComponents/result-table/models/column.model';
+import { TableDataSource } from '../utilityComponents/result-table/models/table-data-source.model';
 
 export interface TimeReportData {
   id: string;
@@ -78,7 +79,7 @@ const NAMES: string[] = [
 export class SearchTimeReportComponent implements AfterViewInit {
 
   tableTitle: string | undefined;
-  dataSource: MatTableDataSource<any>;
+  dataSource: TableDataSource;
   displayedColumns: string[] | undefined = [
     'name',
     'surname',
@@ -90,7 +91,7 @@ export class SearchTimeReportComponent implements AfterViewInit {
 
   constructor() {
     // Create 100 users
-    const users = Array.from({ length: 100 }, (_, k) => createNewUser(k + 1));
+    const users = Array.from({ length: 5 }, (_, k) => createNewUser(k + 1));
 
 
 
@@ -104,7 +105,7 @@ export class SearchTimeReportComponent implements AfterViewInit {
     });
 
     // Assign the data to the data source for the table to render
-    this.dataSource = new MatTableDataSource(users);
+    this.dataSource = new TableDataSource(100,users);
 
   }
 
@@ -114,11 +115,7 @@ export class SearchTimeReportComponent implements AfterViewInit {
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
+    console.log(filterValue);
   }
 }
 
