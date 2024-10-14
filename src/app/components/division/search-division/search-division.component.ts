@@ -1,9 +1,11 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, inject, Injector, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { Division } from '../../model/division';
+import { Division } from '../../../model/division';
+import { DivisionService } from '../../../services/division.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-division-search',
@@ -11,11 +13,11 @@ import { Division } from '../../model/division';
   imports: [MatTableModule,
     MatPaginatorModule,
     MatInputModule,
-    MatFormFieldModule,],
-  templateUrl: './division-search.component.html',
-  styleUrl: './division-search.component.scss'
+    MatFormFieldModule],
+  templateUrl: './search-division.component.html',
+  styleUrl: './search-division.component.scss'
 })
-export class DivisionSearchComponent {
+export class SearchDivisionComponent {
   displayedColumns: {header: string, attribute: string}[] = [
     {header: 'Id', attribute: 'id'},
     {header: 'Name', attribute: 'name'},
@@ -23,17 +25,24 @@ export class DivisionSearchComponent {
     {header: 'Owner', attribute: 'owner'},
     {header: 'Number of Users', attribute: 'numberUser'}
   ];
-  dataSource = new MatTableDataSource<Division>(ELEMENT_DATA);
+  
+  dataSource: MatTableDataSource<Division>;
 
   displayedColumnsAttribute = this.displayedColumns.map(c => c.attribute);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor () {
+  divisionService = inject(DivisionService)
+
+  private router: Router;
+
+  constructor (injector: Injector) {
     // this.dataSource.filterPredicate = (data: Element, filter: string) => {
     //   return data.name.toLocaleLowerCase().includes(filter) ||
     //   data.symbol.label.toLocaleLowerCase().includes(filter);
     // }
+    this.router = injector.get(Router);
+    this.dataSource = new MatTableDataSource<Division>(this.divisionService.getDivisionList());
   }
 
   ngAfterViewInit() {
@@ -46,22 +55,9 @@ export class DivisionSearchComponent {
   }
 
   openDetailDivision(row: any) {
-    console.log(row);
+    // this.router.navigateByUrl(`/division-detail/${row.id}`);
   }
 }
-
-const ELEMENT_DATA: Division[] = [
-  {id: 1, name: 'Autostrade', owner: 'Grassi', numberUser: 7},
-  {id: 2, name: 'Fabbrica', owner: 'Tornaroli', numberUser: 12},
-  {id: 3, name: 'Commerciale', owner: 'Rossi', numberUser: 4},
-  {id: 4, name: 'Assunzioni', owner: 'Pinochi', numberUser: 2},
-  {id: 5, name: 'Eng', owner: 'Grasso', numberUser: 8},
-  {id: 6, name: 'Esselunga', owner: 'Terzi', numberUser: 7},
-  {id: 7, name: 'Lilly', owner: 'Capaccioli', numberUser: 12},
-  {id: 8, name: 'ReAdvice', owner: 'Verdi', numberUser: 4},
-  {id: 9, name: 'Beesy', owner: 'Leroy', numberUser: 2},
-  {id: 10, name: 'Project', owner: 'Levis', numberUser: 8}
-]
 
 // const ELEMENT_DATA: Division[] = [
 //   {id: 1, name: 'Autostrade', activityCode: 'A120', owner: 'Grassi', numberUser: 7},
