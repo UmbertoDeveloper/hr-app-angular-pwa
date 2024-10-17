@@ -20,4 +20,4 @@
   </mat-form-field>
 </div>
 
-<app-result-table [dataSource]="dataSource"></app-result-table>
+<app-result-table [dataSource]="dataSource" [isLoading]="tableLoading" (onRowClick)="onRowClick($event)" [displayedColumns]="displayedColumns" (onPageOrSizeChange)="onPageOrSizeChange($event)" (onSortChange)="onSortChange($event)"></app-result-table>

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, ViewChild, AfterViewInit, WritableSignal, signal } from '@angular/core';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -8,6 +8,7 @@ import { MonthNamePipe } from "../pipes/month-name.pipe";
 import { ResultTableComponent } from "../utilityComponents/result-table/result-table.component";
 import { Column } from '../utilityComponents/result-table/models/column.model';
 import { TableDataSource } from '../utilityComponents/result-table/models/table-data-source.model';
+import { TableChanges } from '../utilityComponents/result-table/models/table-changes.model';
 
 export interface TimeReportData {
   id: string;
@@ -74,23 +75,30 @@ const NAMES: string[] = [
   imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule, MonthNamePipe, ResultTableComponent],
   templateUrl: './search-time-report.component.html',
   styleUrl: './search-time-report.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchTimeReportComponent implements AfterViewInit {
-
+  displayedColumns!: Column[];
   tableTitle: string | undefined;
-  dataSource: TableDataSource;
-  displayedColumns: string[] | undefined = [
-    'name',
-    'surname',
-    'month',
-    'year'
-  ];
+  dataSource!: TableDataSource;
+  tableLoading: boolean = false;
 
 
 
   constructor() {
     // Create 100 users
+    this.tableLoading = true;
+    setTimeout(() => {
+      this.displayedColumns = [
+        new Column('id', 'Id'),
+        new Column('name', 'Name'),
+        new Column('surname', 'Surname'),
+        new Column('month', 'Month'),
+        new Column('year', 'Year')
+      ];
+    }, 5000);
+
+
+
     const users = Array.from({ length: 5 }, (_, k) => createNewUser(k + 1));
 
 
@@ -104,8 +112,12 @@ export class SearchTimeReportComponent implements AfterViewInit {
       return b.year.localeCompare(a.year);
     });
 
+    setTimeout(() => {
+      this.dataSource = new TableDataSource(100, users);
+      this.tableLoading = false;
+    }, 10000);
     // Assign the data to the data source for the table to render
-    this.dataSource = new TableDataSource(100,users);
+    
 
   }
 
@@ -113,9 +125,21 @@ export class SearchTimeReportComponent implements AfterViewInit {
 
   }
 
+  onRowClick(event: any) {
+    console.log('rowClicked', event)
+  }
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     console.log(filterValue);
+  }
+
+  onPageOrSizeChange(event: PageEvent) {
+    console.log('event', event)
+  }
+
+  onSortChange(event: Sort) {
+    console.log('event', event)
   }
 }
 

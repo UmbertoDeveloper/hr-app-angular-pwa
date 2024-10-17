@@ -1,63 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, effect, EventEmitter, Input, Output, signal, ViewChild, WritableSignal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, EventEmitter, Input, Output, signal, SimpleChanges, ViewChild, WritableSignal } from '@angular/core';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MonthNamePipe } from "../../pipes/month-name.pipe";
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatProgressSpinner, MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Column } from './models/column.model';
 import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { merge, tap } from 'rxjs';
 import { TableDataSource } from './models/table-data-source.model';
+import { TableChanges } from './models/table-changes.model';
 
-const MONTHS: string[] = [
-  '01',
-  '02',
-  '03',
-  '04',
-  '05',
-  '06',
-  '07',
-  '08',
-  '09',
-  '10',
-  '11',
-  '12'
-];
-const YEARS: string[] = [
-  '2001',
-  '2002',
-  '2003',
-  '2004',
-  '2005',
-  '2006',
-  '2007',
-  '2008',
-  '2009',
-  '2010',
-  '2011',
-  '2012'
-];
-const NAMES: string[] = [
-  'Maia',
-  'Asher',
-  'Olivia',
-  'Atticus',
-  'Amelia',
-  'Jack',
-  'Charlotte',
-  'Theodore',
-  'Isla',
-  'Oliver',
-  'Isabella',
-  'Jasper',
-  'Cora',
-  'Levi',
-  'Violet',
-  'Arthur',
-  'Mia',
-  'Thomas',
-  'Elizabeth',
-];
 
 @Component({
   selector: 'app-result-table',
@@ -65,37 +17,52 @@ const NAMES: string[] = [
     CommonModule,
     MatTableModule,
     MatSortModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatProgressSpinnerModule
   ],
   standalone: true,
   templateUrl: './result-table.component.html',
   styleUrl: './result-table.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ResultTableComponent {
-  displayedColumns: string[] = ['name', 'surname', 'month', 'year'];
+  @Input() displayedColumns!: Column[];
+  @Input() isLoading!: boolean;
   @Input() dataSource!: TableDataSource;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  @Output() sizeOrPageChange: EventEmitter<PageEvent> = new EventEmitter<PageEvent>();
-  @Output() sortChange: EventEmitter<Sort> = new EventEmitter<Sort>();
+  @Output() onPageOrSizeChange: EventEmitter<PageEvent> = new EventEmitter<PageEvent>();
+  @Output() onSortChange: EventEmitter<Sort> = new EventEmitter<Sort>();
   totalItems!: number;
-  itemsPerPage: number=5;
+  displayedColumnsAttribute!: string[];
+  itemsPerPage: number = 5;
+  @Output() onRowClick: EventEmitter<any> = new EventEmitter<any>();
+
 
   constructor() {
-
   }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['displayedColumns'] && changes['displayedColumns'].currentValue) {
+      this.displayedColumnsAttribute = this.displayedColumns.map((column: Column) => column.attribute);
+    }
+  }
+
+
   ngAfterViewInit() {
-      this.totalItems = 100;
+    this.totalItems = 100;
 
     // Trigger quando cambiano paginazione o ordinamento
-    merge(this.paginator.page, this.sort.sortChange)
-      .pipe(tap(() => this.onPageOrSortChange())) // Ricarica i dati a ogni cambiamento
+    this.paginator.page
+      .pipe(tap(() => this.pageOrSizeChange()))
+      .subscribe();
+
+    this.sort.sortChange
+      .pipe(tap(() => this.sortChange()))
       .subscribe();
   }
 
-  onPageOrSortChange() {
+  onPageOrSortOrSizeChange() {
     const pageEvent: PageEvent = {
       pageIndex: this.paginator.pageIndex,
       pageSize: this.paginator.pageSize,
@@ -107,25 +74,34 @@ export class ResultTableComponent {
       direction: this.sort.direction
     } : { active: '', direction: '' };
 
-    this.loadData(pageEvent, sortEvent);
+
   }
 
-  loadData(pageEvent: PageEvent, sortEvent: Sort) {
-    console.log('loadData', pageEvent, sortEvent);
+  loadData() {
+
     // Qui puoi fare una chiamata al backend per ottenere i dati paginati e ordinati
   }
+  clickOnRow(row: any) {
+    this.onRowClick.emit(row);
+  }
 
-  ngOnChanges() {
+
+  pageOrSizeChange() {
+    const pageEvent: PageEvent = {
+      pageIndex: this.paginator.pageIndex,
+      pageSize: this.paginator.pageSize,
+      length: this.totalItems
+    };
+    this.onPageOrSizeChange.emit(pageEvent);
 
   }
 
-  onPageOrSizeChange(event: PageEvent) {
-    console.log('onPageOrSizeChange', event);
-    this.sizeOrPageChange.emit(event);
-  }
+  sortChange() {
+    const sortEvent: Sort = this.sort.active ? {
+      active: this.sort.active,
+      direction: this.sort.direction
+    } : { active: '', direction: '' };
 
-  onSortChange(event: Sort) {
-    console.log('onSortChange', event);
-    this.sortChange.emit(event);
+    this.onSortChange.emit(sortEvent);
   }
 }
