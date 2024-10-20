@@ -11,7 +11,7 @@ import { Division } from '../../model/division';
   imports: [MatTableModule,
     MatPaginatorModule,
     MatInputModule,
-    MatFormFieldModule,],
+    MatFormFieldModule],
   templateUrl: './division-search.component.html',
   styleUrl: './division-search.component.scss'
 })

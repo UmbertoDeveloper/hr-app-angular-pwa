@@ -1,0 +1,57 @@
+
+
+<div class="container">
+    <h4>{{division?.name}} Detail</h4>
+    @if (isReadOnly) {
+        <div class="buttonEdit">
+            <button mat-flat-button (click)="toEditMode()">Edit</button>
+        </div>
+    }
+    <form [formGroup]="divisionEditForm">
+        <!-- <mat-grid-list cols="8">
+            <mat-grid-tile [colspan]="8">
+                <mat-form-field appearance="outline">
+                    <mat-label>Id</mat-label>
+                    <input matInput type="text"/>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="4">
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Name</mat-label>
+                    <input matInput type="text"/>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="4">
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Owner</mat-label>
+                    <input matInput type="text"/>
+                </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list> -->
+
+        <mat-form-field appearance="outline" >
+            <mat-label>Id</mat-label>
+            <input matInput type="text" formControlName="id"/>
+        </mat-form-field>
+
+        <div class="modificabili">
+            <mat-form-field appearance="outline" style="padding-right: 1.5rem;">
+                <mat-label>Name</mat-label>
+                <input matInput type="text" formControlName="name"/>
+            </mat-form-field>
+    
+            <mat-form-field appearance="outline" style="padding-left: 1.5rem;">
+                <mat-label>Owner</mat-label>
+                <input matInput type="text" formControlName="owner"/>
+            </mat-form-field>
+        </div>
+
+        
+    </form>
+    @if(!isReadOnly) {
+        <button mat-flat-button (click)="editDivision()">Save</button>
+    }
+    
+</div>
