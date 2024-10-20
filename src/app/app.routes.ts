@@ -8,7 +8,14 @@ import { SearchDivisionComponent } from './components/division/search-division/s
 export const routes: Routes = [
     { path: '', redirectTo: '/home', pathMatch: 'full'},
     // { path: '**', redirectTo: '/home'},
+
     { path: 'home', component: MainContentComponent},
+    {
+        path: 'time-reports',
+        loadComponent() {
+            return import('./search-time-report/search-time-report.component').then(m => m.SearchTimeReportComponent);
+        },
+    },
     { path: 'search-division',
         component: SearchDivisionComponent
     },

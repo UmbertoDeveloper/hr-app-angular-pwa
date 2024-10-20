@@ -1,0 +1,23 @@
+<div class="filter-container">
+  <mat-form-field [appearance]="'outline'">
+    <mat-label>Nome</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Nome" #nameInput>
+  </mat-form-field>
+
+  <mat-form-field [appearance]="'outline'">
+    <mat-label>Cognome</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Cognome" #surnameInput>
+  </mat-form-field>
+
+  <mat-form-field [appearance]="'outline'">
+    <mat-label>Mese</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Mese" #monthInput>
+  </mat-form-field>
+
+  <mat-form-field [appearance]="'outline'">
+    <mat-label>Anno</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Anno" #yearInput>
+  </mat-form-field>
+</div>
+
+<app-result-table [dataSource]="dataSource" [isLoading]="tableLoading" (onRowClick)="onRowClick($event)" [displayedColumns]="displayedColumns" (onPageOrSizeChange)="onPageOrSizeChange($event)" (onSortChange)="onSortChange($event)"></app-result-table>

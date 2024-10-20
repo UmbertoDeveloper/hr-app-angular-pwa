@@ -1,0 +1,51 @@
+/* Mobile-first: La tabella sarà verticale su schermi piccoli */
+table {
+  width: 100%;
+  table-layout: auto; /* Cambiato per adattarsi meglio a schermi piccoli */
+  overflow-wrap: break-word;
+  border-collapse: collapse;
+}
+
+td, th {
+  width: auto;
+  word-wrap: break-word;
+  padding: 8px; /* Spaziatura per rendere il contenuto più leggibile */
+  text-align: left; /* Allinea il testo a sinistra per schermi piccoli */
+  border: 1px solid #ddd; /* Aggiunge un bordo sottile per migliorare la leggibilità */
+}
+
+/* Effetto click sulla riga */
+tr:active {
+  background-color: #f0f0f0; /* Cambia il colore di sfondo quando la riga viene cliccata */
+}
+
+/* Media Query: Adatta la tabella per schermi più grandi (tablet e desktop) */
+@media (min-width: 600px) {
+  table {
+    table-layout: fixed; /* Utilizza un layout a larghezza fissa su schermi più grandi */
+  }
+
+  td, th {
+    width: 25%; /* Distribuisce uniformemente le colonne su schermi più grandi */
+  }
+}
+
+/* Aggiungi lo scorrimento orizzontale su schermi piccoli */
+.table-container {
+  overflow-x: auto; /* Aggiunge lo scorrimento orizzontale se la tabella non si adatta a schermi piccoli */
+  display: block;
+}
+
+/* Spinner container */
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%; /* Assicura che il contenitore copra l'intera altezza della tabella */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.8); /* Sfondo semi-trasparente per coprire la tabella */
+  z-index: 1; /* Assicura che lo spinner sia sopra la tabella */
+}

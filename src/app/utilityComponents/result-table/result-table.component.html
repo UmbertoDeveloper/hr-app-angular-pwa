@@ -1,0 +1,34 @@
+<h5>Risultati</h5>
+
+<div class="mat-elevation-z8">
+    @if (isLoading)
+    {
+    <div class="spinner-container">
+        <mat-spinner></mat-spinner>
+    </div>
+    }
+
+    <table mat-table [dataSource]="dataSource?.content||[]" matSort>
+        @for (column of displayedColumns; track $index) {
+        <ng-container [matColumnDef]="column.attribute">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{column.header}}</th>
+            <td mat-cell *matCellDef="let element">{{element[column.attribute]}}</td>
+        </ng-container>
+        }
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumnsAttribute"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumnsAttribute;" (click)="clickOnRow(row)"></tr>
+
+
+        @if (!isLoading) {
+        <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="4">No data matching the filter</td>
+        </tr>
+        }
+    </table>
+
+    <mat-paginator [length]="dataSource?.totalElements" [pageSize]="itemsPerPage" [pageSizeOptions]="[5, 10, 25, 100]"
+        aria-label="Select page of users">
+    </mat-paginator>
+
+</div>
