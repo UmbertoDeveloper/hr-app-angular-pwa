@@ -27,7 +27,7 @@ import { TableChanges } from './models/table-changes.model';
 export class ResultTableComponent {
   @Input() displayedColumns!: Column[];
   @Input() isLoading!: boolean;
-  @Input() dataSource!: TableDataSource;
+  @Input() dataSource: TableDataSource|undefined;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -45,6 +45,8 @@ export class ResultTableComponent {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['displayedColumns'] && changes['displayedColumns'].currentValue) {
       this.displayedColumnsAttribute = this.displayedColumns.map((column: Column) => column.attribute);
+    }else if(changes['dataSource'] && changes['dataSource'].currentValue){
+      this.dataSource = changes['dataSource'].currentValue;
     }
   }
 
