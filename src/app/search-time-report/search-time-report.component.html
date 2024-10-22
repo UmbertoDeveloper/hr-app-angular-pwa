@@ -1,23 +1,30 @@
 <div class="filter-container">
-  <mat-form-field [appearance]="'outline'">
-    <mat-label>Nome</mat-label>
-    <input matInput (keyup)="applyFilter($event)" placeholder="Nome" #nameInput>
-  </mat-form-field>
+  <form [formGroup]="options" (submit)="searchData()">
+      <mat-form-field appearance="fill">
+        <input matInput placeholder="Nome" [formControl]="nomeControl" />
+      </mat-form-field>
+    
+      <mat-form-field appearance="fill">
+        <input matInput placeholder="Cognome" [formControl]="cognomeControl"/>
+      </mat-form-field>
+    
+      <mat-form-field appearance="fill">
+        <mat-select [formControl]="meseControl">
+          <mat-option>-- None --</mat-option>
+          <mat-option value="option">Option</mat-option>
+        </mat-select>
+        <mat-label><mat-icon>favorite</mat-icon> <strong> Fancy</strong> <em> Mese</em></mat-label>
+      </mat-form-field>
 
-  <mat-form-field [appearance]="'outline'">
-    <mat-label>Cognome</mat-label>
-    <input matInput (keyup)="applyFilter($event)" placeholder="Cognome" #surnameInput>
-  </mat-form-field>
-
-  <mat-form-field [appearance]="'outline'">
-    <mat-label>Mese</mat-label>
-    <input matInput (keyup)="applyFilter($event)" placeholder="Mese" #monthInput>
-  </mat-form-field>
-
-  <mat-form-field [appearance]="'outline'">
-    <mat-label>Anno</mat-label>
-    <input matInput (keyup)="applyFilter($event)" placeholder="Anno" #yearInput>
-  </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-select [formControl]="annoControl">
+          <mat-option>-- None --</mat-option>
+          <mat-option value="option">Option</mat-option>
+        </mat-select>
+        <mat-label><mat-icon>favorite</mat-icon> <strong> Fancy</strong> <em> Anno</em></mat-label>
+      </mat-form-field>
+    <button mat-raised-button class="button-style" type="submit" color="primary">Cerca</button>
+  </form>
 </div>
 
 <app-result-table [dataSource]="dataSource" [isLoading]="tableLoading" (onRowClick)="onRowClick($event)" [displayedColumns]="displayedColumns" (onPageOrSizeChange)="onPageOrSizeChange($event)" (onSortChange)="onSortChange($event)"></app-result-table>

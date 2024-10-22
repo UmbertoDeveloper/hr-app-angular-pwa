@@ -1,24 +1,52 @@
-table {
-  width: 100%;
-  table-layout: fixed;
-  overflow-wrap: break-word; 
-}
-.filter-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  margin-bottom: 20px;
-  gap: 10px;
-}
+  table {
+    width: 100%;
+    table-layout: fixed;
+    overflow-wrap: break-word; 
+  }
 
-.mat-mdc-form-field {
-  font-size: 14px;
-  width: 100%;
-  max-width: 20%;
-  flex: 1 1 20%;
-}
+  .filter-container {
+    display: flex;
+    flex-direction: column; /* Aggiunto per allineare i filtri uno dopo l'altro */
+    gap: 10px; /* Gap più piccolo */
+    margin-bottom: 20px;
+  }
 
-td, th {
-  width: 25%;
-  word-wrap: break-word; 
-}
+
+  td, th {
+    width: 25%;
+    word-wrap: break-word; 
+  }
+
+  .button-style {
+    font-size: 14px;
+    width: 100%;
+    max-width: 20%;
+    flex: 1 1 20%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+  }
+
+  .button-style:hover {
+    background-color: #0056b3;
+  }
+
+  @media (max-width: 768px) {
+    .button-style {
+      width: 100%;
+      max-width: 100%;
+    }
+    .filter-container {
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+
+    mat-form-field {
+      flex: 1 1 100%;
+      flex-wrap: wrap;
+    }
+  }

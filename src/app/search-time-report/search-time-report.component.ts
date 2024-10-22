@@ -1,14 +1,21 @@
-import { ChangeDetectionStrategy, Component, ViewChild, AfterViewInit, WritableSignal, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild, AfterViewInit, WritableSignal, signal, inject, forwardRef } from '@angular/core';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { FloatLabelType, MatFormFieldModule } from '@angular/material/form-field';
 import { MonthNamePipe } from "../pipes/month-name.pipe";
 import { ResultTableComponent } from "../utilityComponents/result-table/result-table.component";
 import { Column } from '../utilityComponents/result-table/models/column.model';
 import { TableDataSource } from '../utilityComponents/result-table/models/table-data-source.model';
 import { TableChanges } from '../utilityComponents/result-table/models/table-changes.model';
+import { FormBuilder, FormControl, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { map } from 'rxjs/operators';
+import { MatSelectModule } from '@angular/material/select';
+import {MatRadioModule} from '@angular/material/radio';
+import {toSignal} from '@angular/core/rxjs-interop';
+import { MatIconModule } from '@angular/material/icon';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 export interface TimeReportData {
   id: string;
@@ -72,7 +79,7 @@ const NAMES: string[] = [
 @Component({
   selector: 'app-search-time-report',
   standalone: true,
-  imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule, MonthNamePipe, ResultTableComponent],
+  imports: [FormsModule, ReactiveFormsModule,MatFormFieldModule, MatCheckboxModule, MatRadioModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule, MonthNamePipe, ResultTableComponent,MatSelectModule,  MatIconModule],
   templateUrl: './search-time-report.component.html',
   styleUrl: './search-time-report.component.scss',
 })
@@ -81,6 +88,16 @@ export class SearchTimeReportComponent implements AfterViewInit {
   tableTitle: string | undefined;
   dataSource!: TableDataSource;
   tableLoading: boolean = false;
+  readonly nomeControl = new FormControl();
+  readonly cognomeControl = new FormControl();
+  readonly meseControl = new FormControl();
+  readonly annoControl = new FormControl();
+  readonly options = inject(FormBuilder).group({
+    nome: this.nomeControl,
+    cognome: this.cognomeControl,
+    mese: this.meseControl,
+    anno: this.annoControl
+  });
 
 
 
@@ -119,6 +136,10 @@ export class SearchTimeReportComponent implements AfterViewInit {
     // Assign the data to the data source for the table to render
     
 
+  }
+
+  searchData(){
+    console.log('searchData', this.options.value);
   }
 
   ngAfterViewInit() {
